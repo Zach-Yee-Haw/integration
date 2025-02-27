@@ -24,7 +24,7 @@ def Integration_rectangles_python_base(fonction, X0, X1, n):
     """
     :param fonction: Fonction à intégrer
     :param X0: Première valeur de X
-    :param X1: Deuxième valeur de X
+    :param X1: Dernière valeur de X
     :param n: Nombre de rectangles
     :return: L'aire sous la courbe
     """
@@ -66,7 +66,7 @@ def Integration_trapezes_python_base(fonction, X0, X1, n):
     """
     :param fonction: Fonction à intégrer
     :param X0: Première valeur de X
-    :param X1: Deuxième valeur de X
+    :param X1: Dernière valeur de X
     :param n: Nombre de rectangles
     :return: L'aire sous la courbe
     """
@@ -127,9 +127,9 @@ def Integration_simpson_python_base(fonction, X0, X1, n):
     """
     :param fonction: Fonction à intégrer
     :param X0: Première valeur de X
-    :param X1: Deuxième valeur de X
+    :param X1: Dernière valeur de X
     :param n: Nombre de rectangles
-    :return: L'aire sous la courbe
+    :return: Une liste contenant l'erreur de chaque méthode d'intégration
     """
 
     # Si les bornes sont inversée (x0 > x1), le signe de l'aire devra être inversé
@@ -170,7 +170,22 @@ def Integration_simpson_python_base(fonction, X0, X1, n):
     # On retourne l'aire
     return aire
 
-test0 = Solution_analytique(5) - Solution_analytique(-5)
-test1 = Integration_rectangles_python_base(Fonction_test, -5, 5, 10)
-test2 = Integration_trapezes_python_base(Fonction_test, -5, 5, 10)
-test3 = Integration_simpson_python_base(Fonction_test, -5, 5, 10)
+def Erreur_integration(x0, x1, n):
+
+    """
+    :param X0: Première valeur de X
+    :param X1: Dernière valeur de X
+    :param n: Nombre de rectangles
+    :return:
+    """
+
+    resultat_analytique= Solution_analytique(x1) - Solution_analytique(x0)
+    resultat_rectangles = Integration_rectangles_python_base(Fonction_test, x0, x1, n)
+    resultat_trapezes = Integration_trapezes_python_base(Fonction_test, x0, x1, n)
+    resultat_simpson = Integration_simpson_python_base(Fonction_test, x0, x1, n)
+
+    erreur_rectangle = abs((resultat_rectangles-resultat_analytique)/resultat_analytique)
+    erreur_trapezes = abs((resultat_trapezes - resultat_analytique) / resultat_analytique)
+    erreur_simpson = abs((resultat_simpson - resultat_analytique) / resultat_analytique)
+
+    return [erreur_rectangle, erreur_trapezes, erreur_simpson]
