@@ -1,4 +1,5 @@
 import numpy as np
+import scipy as sp
 from matplotlib import pyplot as plt
 import timeit
 import time
@@ -53,7 +54,7 @@ def Integration_rectangles_python_base(fonction, X0, X1, n):
         x += dx
 
     # Si les bornes sont inversée, on inverse le signe de l'aire
-    if negatif == True:
+    if negatif:
 
         aire = -aire
 
@@ -114,7 +115,7 @@ def Integration_trapezes_python_base(fonction, X0, X1, n):
         x += dx
 
     # Si les bornes sont inversée, on inverse le signe de l'aire
-    if negatif == True:
+    if negatif:
 
         aire = -aire
 
@@ -163,12 +164,13 @@ def Integration_simpson_python_base(fonction, X0, X1, n):
         x += dx
 
     # Si les bornes sont inversée, on inverse le signe de l'aire
-    if negatif == True:
+    if negatif:
 
         aire = -aire
 
     # On retourne l'aire
     return aire
+
 
 def Erreur_integration(x0, x1, n):
 
