@@ -172,6 +172,129 @@ def Integration_simpson_python_base(fonction, X0, X1, n):
     return aire
 
 
+def Integration_rectangles_numpy(fonction, X0, X1, n):
+    """
+    :param fonction: Fonction à intégrer
+    :param X0: Première valeur de X
+    :param X1: Dernière valeur de X
+    :param n: Nombre de rectangles
+    :return: L'aire sous la courbe
+    """
+
+    # Si les bornes sont inversée (x0 > x1), le signe de l'aire devra être inversé
+    negatif = False
+    x0 = X0
+    x1 = X1
+
+    if X0 > X1:
+        negatif = True
+        x0 = X1
+        x1 = X0
+
+    # On initialise nos variables dépendantes et indépendantes
+    aire = 0
+    dx = (x1 - x0) / n
+    X = np.arange(x0 + dx / 2, x1, dx)
+    Y = X.copy()
+    Y = fonction(Y)
+
+    # On calcule l'aire de chaque trapèze puis on en fait la sommation
+    aire = Y.copy()*dx
+    aire = sum(aire)
+
+    # Si les bornes sont inversée, on inverse le signe de l'aire
+    if negatif:
+        aire = -aire
+
+    # On retourne l'aire
+    return aire
+
+
+def Integration_trapezes_numpy(fonction, X0, X1, n):
+    """
+    :param fonction: Fonction à intégrer
+    :param X0: Première valeur de X
+    :param X1: Dernière valeur de X
+    :param n: Nombre de rectangles
+    :return: L'aire sous la courbe
+    """
+
+    # Si les bornes sont inversée (x0 > x1), le signe de l'aire devra être inversé
+    negatif = False
+    x0 = X0
+    x1 = X1
+
+    if X0 > X1:
+        negatif = True
+        x0 = X1
+        x1 = X0
+
+    # On initialise nos variables dépendantes et indépendantes
+    aire = 0
+    dx = (x1 - x0) / n
+    Xa = np.arange(x0, x1, dx)
+    Xb = np.arange(x0+dx, x1+dx, dx)
+    Ya = Xa.copy()
+    Yb = Xb.copy()
+    Ya = fonction(Ya)
+    Yb = fonction(Yb)
+
+    # On calcule l'aire de chaque trapèze puis on en fait la sommation
+    aire = Ya.copy()*dx + (Yb.copy() - Ya.copy()) * dx / 2
+    aire = sum(aire)
+
+    # Si les bornes sont inversée, on inverse le signe de l'aire
+    if negatif:
+        aire = -aire
+
+    # On retourne l'aire
+    return aire
+
+
+def Integration_simpson_numpy(fonction, X0, X1, n):
+    """
+    :param fonction: Fonction à intégrer
+    :param X0: Première valeur de X
+    :param X1: Dernière valeur de X
+    :param n: Nombre de rectangles
+    :return: L'aire sous la courbe
+    """
+
+    # Si les bornes sont inversée (x0 > x1), le signe de l'aire devra être inversé
+    negatif = False
+    x0 = X0
+    x1 = X1
+
+    if X0 > X1:
+        negatif = True
+        x0 = X1
+        x1 = X0
+
+    # On initialise nos variables dépendantes et indépendantes
+    aire = 0
+    dx = (x1 - x0) / n
+    Xa = np.arange(x0, x1, dx)
+    Xb = np.arange(x0+dx, x1+dx, dx)
+    Xc = np.arange(x0+dx/2, x1+dx/2, dx)
+    Ya = Xa.copy()
+    Yb = Xb.copy()
+    Yc = Xc.copy()
+    Ya = fonction(Ya)
+    Yb = fonction(Yb)
+    Yc = fonction(Yc)
+
+    # On calcule l'aire de chaque parabole puis on en fait la sommation
+    aire = (Xb.copy() - Xa.copy()) / 6 * (Ya.copy() + 4 * Yc.copy() + Yb.copy())
+    aire = sum(aire)
+
+    # Si les bornes sont inversée, on inverse le signe de l'aire
+    if negatif:
+        aire = -aire
+
+    # On retourne l'aire
+    return aire
+
+
 def Integration_rectangles_scipy(fonction, X0, X1, n):
     """
         :param fonction: Fonction à intégrer
@@ -288,26 +411,34 @@ def Erreur_integration(x0, x1, n):
     resultat_analytique= Solution_analytique(x1) - Solution_analytique(x0)
 
     resultat_rectangles_python_base = Integration_rectangles_python_base(Fonction_test, x0, x1, n)
+    resultat_rectangles_numpy = Integration_rectangles_numpy(Fonction_test, x0, x1, n)
     resultat_rectangles_scipy = Integration_rectangles_scipy(Fonction_test, x0, x1, n)
 
     resultat_trapezes_python_base = Integration_trapezes_python_base(Fonction_test, x0, x1, n)
+    resultat_trapezes_numpy = Integration_trapezes_numpy(Fonction_test, x0, x1, n)
     resultat_trapezes_scipy = Integration_trapezes_scipy(Fonction_test, x0, x1, n)
 
     resultat_simpson_python_base = Integration_simpson_python_base(Fonction_test, x0, x1, n)
+    resultat_simpson_numpy = Integration_simpson_numpy(Fonction_test, x0, x1, n)
     resultat_simpson_scipy = Integration_simpson_scipy(Fonction_test, x0, x1, n)
 
 
     erreur_rectangle_python_base = abs((resultat_rectangles_python_base-resultat_analytique)/resultat_analytique)
+    erreur_rectangle_numpy = abs((resultat_rectangles_numpy - resultat_analytique) / resultat_analytique)
     erreur_rectangle_scipy = abs((resultat_rectangles_scipy - resultat_analytique) / resultat_analytique)
 
     erreur_trapezes_python_base = abs((resultat_trapezes_python_base - resultat_analytique) / resultat_analytique)
+    erreur_trapezes_numpy = abs((resultat_trapezes_numpy - resultat_analytique) / resultat_analytique)
     erreur_trapezes_scipy = abs((resultat_trapezes_scipy - resultat_analytique) / resultat_analytique)
 
     erreur_simpson_python_base = abs((resultat_simpson_python_base - resultat_analytique) / resultat_analytique)
+    erreur_simpson_numpy = abs((resultat_simpson_numpy - resultat_analytique) / resultat_analytique)
     erreur_simpson_scipy = abs((resultat_simpson_scipy - resultat_analytique) / resultat_analytique)
 
 
-    return [[erreur_rectangle_python_base, erreur_rectangle_scipy],
-            [erreur_trapezes_python_base, erreur_trapezes_scipy],
-            [erreur_simpson_python_base, erreur_simpson_scipy]]
+    return [[erreur_rectangle_python_base, erreur_rectangle_numpy, erreur_rectangle_scipy],
+            [erreur_trapezes_python_base, erreur_trapezes_numpy, erreur_trapezes_scipy],
+            [erreur_simpson_python_base, erreur_simpson_numpy, erreur_simpson_scipy]]
 
+test = Integration_simpson_numpy(Fonction_test, -5, 5, 10)
+test = 1
