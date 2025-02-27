@@ -3,6 +3,18 @@ from matplotlib import pyplot as plt
 import timeit
 import time
 
+
+
+
+def Fonction_test(x):
+
+    y = 5*x**2 + 2*x - 5
+
+    return y
+
+
+
+
 def Integration_rectangles_python_base(fonction, X0, X1, n):
 
     """
@@ -39,11 +51,3 @@ def Integration_rectangles_python_base(fonction, X0, X1, n):
         aire = -aire
 
     return aire
-
-def Fonction_test(x):
-
-    y = 5*x**2 + 2*x - 5
-
-
-
-Integration_rectangles_python_base(Fonction_test(x), X0, X1, n)
