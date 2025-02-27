@@ -25,6 +25,7 @@ def Integration_rectangles_python_base(fonction, X0, X1, n):
     :return: L'aire sous la courbe
     """
 
+    # Si les bornes sont inversée (x0 > x1), le signe de l'aire devra être inversé
     negatif = False
     x0 = X0
     x1 = X1
@@ -35,19 +36,24 @@ def Integration_rectangles_python_base(fonction, X0, X1, n):
         x0 = X1
         x1 = X0
 
-    x = x0
+    # On initialise notre aire, notre largeur de rectangles et notre position initiale
     aire = 0
     dx = (x1 - x0) / n
     x = x0 + dx/2
 
+    # On ajoute l'aire arithmétique de chaque rectangle à l'aire totale
     for i in range(n):
 
         aire += dx * fonction(x)
 
         x += dx
 
+    # Si les bornes sont inversée, on inverse le signe de l'aire
     if negatif == True:
 
         aire = -aire
 
+    # On retourne l'aire
     return aire
+
+
