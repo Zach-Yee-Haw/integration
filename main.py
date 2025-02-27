@@ -4,15 +4,19 @@ import timeit
 import time
 
 
-
-
 def Fonction_test(x):
 
-    y = 5*x**2 + 2*x - 5
+    # Aire sous la courbe entre -5 et 5 = 200
+    y = -2.5 * x**3 + 3 * x**2 + 7*x - 5
 
     return y
 
+def Solution_analytique(x, b = 0):
 
+    # Solution analytique à notre foction de test
+    y = -2.5/4 * x**4 + x**3 + 7/2 * x**2 - 5 * x + b
+
+    return y
 
 
 def Integration_rectangles_python_base(fonction, X0, X1, n):
@@ -166,6 +170,7 @@ def Integration_simpson_python_base(fonction, X0, X1, n):
     # On retourne l'aire
     return aire
 
-test1 = Integration_rectangles_python_base(Fonction_test, -5, 5, 1000)
-test2 = Integration_trapezes_python_base(Fonction_test, -5, 5, 1000)
-test3 = Integration_simpson_python_base(Fonction_test, -5, 5, 1000)
+test0 = Solution_analytique(5) - Solution_analytique(-5)
+test1 = Integration_rectangles_python_base(Fonction_test, -5, 5, 10)
+test2 = Integration_trapezes_python_base(Fonction_test, -5, 5, 10)
+test3 = Integration_simpson_python_base(Fonction_test, -5, 5, 10)
