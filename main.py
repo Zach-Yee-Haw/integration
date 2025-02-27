@@ -78,7 +78,7 @@ def Integration_trapezes_python_base(fonction, X0, X1, n):
         x0 = X1
         x1 = X0
 
-    # On initialise notre aire, notre largeur de rectangles et notre position initiale
+    # On initialise notre aire, notre largeur de trapèzes et notre position initiale
     aire = 0
     dx = (x1 - x0) / n
     x = x0
@@ -117,5 +117,55 @@ def Integration_trapezes_python_base(fonction, X0, X1, n):
     # On retourne l'aire
     return aire
 
+
+def Integration_simpson_python_base(fonction, X0, X1, n):
+
+    """
+    :param fonction: Fonction à intégrer
+    :param X0: Première valeur de X
+    :param X1: Deuxième valeur de X
+    :param n: Nombre de rectangles
+    :return: L'aire sous la courbe
+    """
+
+    # Si les bornes sont inversée (x0 > x1), le signe de l'aire devra être inversé
+    negatif = False
+    x0 = X0
+    x1 = X1
+
+    if X0 > X1:
+
+        negatif = True
+        x0 = X1
+        x1 = X0
+
+    # On initialise notre aire, notre largeur de parabole et notre position initiale
+    aire = 0
+    dx = (x1 - x0) / n
+    x = x0
+
+    # On ajoute l'aire arithmétique de chaque parabole à l'aire totale
+    for i in range(n):
+
+        a = x
+        b = x + dx
+        ab_div2 = (a + b) / 2
+        fa = fonction(a)
+        fb = fonction(b)
+        fab_div2 = fonction(ab_div2)
+
+        aire += (b - a) / 6 * (fa + 4 * fab_div2 + fb)
+
+        x += dx
+
+    # Si les bornes sont inversée, on inverse le signe de l'aire
+    if negatif == True:
+
+        aire = -aire
+
+    # On retourne l'aire
+    return aire
+
 test1 = Integration_rectangles_python_base(Fonction_test, -5, 5, 1000)
 test2 = Integration_trapezes_python_base(Fonction_test, -5, 5, 1000)
+test3 = Integration_simpson_python_base(Fonction_test, -5, 5, 1000)
