@@ -411,28 +411,34 @@ def Erreur_integration(x0, x1, n):
     resultat_analytique= Solution_analytique(x1) - Solution_analytique(x0)
 
     resultat_rectangles_python_base = Integration_rectangles_python_base(Fonction_test, x0, x1, n)
+    resultat_rectangles_numpy = Integration_rectangles_numpy(Fonction_test, x0, x1, n)
     resultat_rectangles_scipy = Integration_rectangles_scipy(Fonction_test, x0, x1, n)
 
     resultat_trapezes_python_base = Integration_trapezes_python_base(Fonction_test, x0, x1, n)
+    resultat_trapezes_numpy = Integration_trapezes_numpy(Fonction_test, x0, x1, n)
     resultat_trapezes_scipy = Integration_trapezes_scipy(Fonction_test, x0, x1, n)
 
     resultat_simpson_python_base = Integration_simpson_python_base(Fonction_test, x0, x1, n)
+    resultat_simpson_numpy = Integration_simpson_numpy(Fonction_test, x0, x1, n)
     resultat_simpson_scipy = Integration_simpson_scipy(Fonction_test, x0, x1, n)
 
 
     erreur_rectangle_python_base = abs((resultat_rectangles_python_base-resultat_analytique)/resultat_analytique)
+    erreur_rectangle_numpy = abs((resultat_rectangles_numpy - resultat_analytique) / resultat_analytique)
     erreur_rectangle_scipy = abs((resultat_rectangles_scipy - resultat_analytique) / resultat_analytique)
 
     erreur_trapezes_python_base = abs((resultat_trapezes_python_base - resultat_analytique) / resultat_analytique)
+    erreur_trapezes_numpy = abs((resultat_trapezes_numpy - resultat_analytique) / resultat_analytique)
     erreur_trapezes_scipy = abs((resultat_trapezes_scipy - resultat_analytique) / resultat_analytique)
 
     erreur_simpson_python_base = abs((resultat_simpson_python_base - resultat_analytique) / resultat_analytique)
+    erreur_simpson_numpy = abs((resultat_simpson_numpy - resultat_analytique) / resultat_analytique)
     erreur_simpson_scipy = abs((resultat_simpson_scipy - resultat_analytique) / resultat_analytique)
 
 
-    return [[erreur_rectangle_python_base, erreur_rectangle_scipy],
-            [erreur_trapezes_python_base, erreur_trapezes_scipy],
-            [erreur_simpson_python_base, erreur_simpson_scipy]]
+    return [[erreur_rectangle_python_base, erreur_rectangle_numpy, erreur_rectangle_scipy],
+            [erreur_trapezes_python_base, erreur_trapezes_numpy, erreur_trapezes_scipy],
+            [erreur_simpson_python_base, erreur_simpson_numpy, erreur_simpson_scipy]]
 
 test = Integration_simpson_numpy(Fonction_test, -5, 5, 10)
 test = 1
