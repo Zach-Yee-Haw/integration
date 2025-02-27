@@ -146,7 +146,7 @@ def Integration_simpson_python_base(fonction, X0, X1, n):
 
     # On initialise notre aire, notre largeur de parabole et notre position initiale
     aire = 0
-    dx = (x1 - x0) / n
+    dx = (x1 - x0) / (n)
     x = x0
 
     # On ajoute l'aire arithmétique de chaque parabole à l'aire totale
@@ -295,37 +295,6 @@ def Integration_simpson_numpy(fonction, X0, X1, n):
     return aire
 
 
-def Integration_rectangles_scipy(fonction, X0, X1, n):
-    """
-        :param fonction: Fonction à intégrer
-        :param X0: Première valeur de X
-        :param X1: Dernière valeur de X
-        :param n: Nombre de rectangles
-        :return: Une liste contenant l'erreur de chaque méthode d'intégration
-        """
-
-    # Si les bornes sont inversée (x0 > x1), le signe de l'aire devra être inversé
-    negatif = False
-    x0 = X0
-    x1 = X1
-
-    if X0 > X1:
-        negatif = True
-        x0 = X1
-        x1 = X0
-
-    # On calcul notre aire à l'aide de scipy
-    aire = float(sp.integrate.quad(fonction, x0, x1, points = n)[0])
-
-
-    # Si les bornes sont inversée, on inverse le signe de l'aire
-    if negatif:
-        aire = -aire
-
-    # On retourne l'aire
-    return aire
-
-
 def Integration_trapezes_scipy(fonction, X0, X1, n):
     """
         :param fonction: Fonction à intégrer
@@ -412,7 +381,6 @@ def Erreur_integration(x0, x1, n):
 
     resultat_rectangles_python_base = Integration_rectangles_python_base(Fonction_test, x0, x1, n)
     resultat_rectangles_numpy = Integration_rectangles_numpy(Fonction_test, x0, x1, n)
-    resultat_rectangles_scipy = Integration_rectangles_scipy(Fonction_test, x0, x1, n)
 
     resultat_trapezes_python_base = Integration_trapezes_python_base(Fonction_test, x0, x1, n)
     resultat_trapezes_numpy = Integration_trapezes_numpy(Fonction_test, x0, x1, n)
@@ -425,7 +393,6 @@ def Erreur_integration(x0, x1, n):
 
     erreur_rectangle_python_base = abs((resultat_rectangles_python_base-resultat_analytique)/resultat_analytique)
     erreur_rectangle_numpy = abs((resultat_rectangles_numpy - resultat_analytique) / resultat_analytique)
-    erreur_rectangle_scipy = abs((resultat_rectangles_scipy - resultat_analytique) / resultat_analytique)
 
     erreur_trapezes_python_base = abs((resultat_trapezes_python_base - resultat_analytique) / resultat_analytique)
     erreur_trapezes_numpy = abs((resultat_trapezes_numpy - resultat_analytique) / resultat_analytique)
@@ -436,9 +403,9 @@ def Erreur_integration(x0, x1, n):
     erreur_simpson_scipy = abs((resultat_simpson_scipy - resultat_analytique) / resultat_analytique)
 
 
-    return [[erreur_rectangle_python_base, erreur_rectangle_numpy, erreur_rectangle_scipy],
+    return [[erreur_rectangle_python_base, erreur_rectangle_numpy],
             [erreur_trapezes_python_base, erreur_trapezes_numpy, erreur_trapezes_scipy],
             [erreur_simpson_python_base, erreur_simpson_numpy, erreur_simpson_scipy]]
 
-test = Integration_simpson_numpy(Fonction_test, -5, 5, 10)
-test = 1
+print(Erreur_integration(-5, 5, 1000))
+print(2**64)
