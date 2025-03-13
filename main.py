@@ -9,7 +9,6 @@ def fonction_test(x):
 
     # Aire sous la courbe entre -5 et 5 = 200
     y = -2.5 * x**3 + 3 * x**2 + 7*x - 5
-
     return y
 
 def solution_analytique(x, b = 0):
@@ -17,10 +16,13 @@ def solution_analytique(x, b = 0):
     # Solution analytique à notre foction de test
     y = -2.5/4 * x**4 + x**3 + 7/2 * x**2 - 5 * x + b
 
+
     return y
 
 
-def integration_rectangles_python_base(fonction, X0, X1, n):
+
+def Integration_rectangles_python_base(fonction, X0, X1, n, graph):
+
 
     """
     :param fonction: Fonction à intégrer
@@ -34,6 +36,7 @@ def integration_rectangles_python_base(fonction, X0, X1, n):
     negatif = False
     x0 = X0
     x1 = X1
+
 
     if X0 > X1:
 
@@ -46,12 +49,27 @@ def integration_rectangles_python_base(fonction, X0, X1, n):
     dx = (x1 - x0) / n
     x = x0 + dx/2
 
+    plot_x = np.linspace(x0,x1, 1000)
+    plot_y = Fonction_test(plot_x)
+    plt.plot(plot_x, plot_y, color='red')
     # On ajoute l'aire arithmétique de chaque rectangle à l'aire totale
+
     for i in range(n):
 
         aire += dx * fonction(x)
 
+        if graph:
+            plot_x = np.append(plot_x, x)
+            plot_y = np.append(plot_y, Fonction_test(x))
+            plt.bar(x,fonction(x), width=dx, color='blue', alpha=0.5, edgecolor='blue')
+
         x += dx
+
+    if graph:
+        plt.title("Intégration rectangle")
+        plt.show()
+
+
 
     # Si les bornes sont inversée, on inverse le signe de l'aire
     if negatif:
@@ -62,7 +80,9 @@ def integration_rectangles_python_base(fonction, X0, X1, n):
     return aire
 
 
-def integration_trapezes_python_base(fonction, X0, X1, n):
+
+def Integration_trapezes_python_base(fonction, X0, X1, n, graph):
+
 
     """
     :param fonction: Fonction à intégrer
@@ -76,6 +96,9 @@ def integration_trapezes_python_base(fonction, X0, X1, n):
     negatif = False
     x0 = X0
     x1 = X1
+
+
+
 
     if X0 > X1:
 
@@ -95,6 +118,11 @@ def integration_trapezes_python_base(fonction, X0, X1, n):
         a = fonction(x)
         b = fonction(x + dx)
 
+        if graph:
+            #Plot de la methode d'integration trapezoidale
+            method_x = [x, x, x+dx, x+dx]
+            method_y = [0, a, b, 0]
+            plt.fill(method_x, method_y,color='blue', alpha=0.5)
 
 
         if a > b:
@@ -114,6 +142,16 @@ def integration_trapezes_python_base(fonction, X0, X1, n):
 
         x += dx
 
+    if graph:
+        # Plot de la courbe exacte
+        plot_x = np.linspace(x0, x1, 1000)
+        plot_y = Fonction_test(plot_x)
+        plt.plot(plot_x, plot_y, color="red")
+
+        plt.title("Intégration trapézoidale")
+        plt.show()
+
+
     # Si les bornes sont inversée, on inverse le signe de l'aire
     if negatif:
 
@@ -123,7 +161,9 @@ def integration_trapezes_python_base(fonction, X0, X1, n):
     return aire
 
 
-def integration_simpson_python_base(fonction, X0, X1, n):
+
+def Integration_simpson_python_base(fonction, X0, X1, n, graph):
+
 
     """
     :param fonction: Fonction à intégrer
@@ -144,6 +184,8 @@ def integration_simpson_python_base(fonction, X0, X1, n):
         x0 = X1
         x1 = X0
 
+
+
     # On initialise notre aire, notre largeur de parabole et notre position initiale
     aire = 0
     dx = (x1 - x0) / (n)
@@ -161,7 +203,23 @@ def integration_simpson_python_base(fonction, X0, X1, n):
 
         aire += (b - a) / 6 * (fa + 4 * fab_div2 + fb)
 
+        if graph:
+            method_x = np.linspace(a,b,100)
+            method_y = ( fa * (method_x - ab_div2) * (method_x - b) / ((a - ab_div2) * (a - b)) +
+                fab_div2 * (method_x - a) * (method_x - b) / ((ab_div2 - a) * (ab_div2 - b)) +
+                fb * (method_x - a) * (method_x - ab_div2) / ((b - a) * (b - ab_div2)))
+
+            plt.plot(method_x,method_y, color="blue")
+            plt.fill_between(method_x, method_y, color='blue',alpha=0.5)
+
         x += dx
+    if graph:
+        # Plot de la courbe exacte
+        plot_x = np.linspace(x0, x1, 1000)
+        plot_y = Fonction_test(plot_x)
+        plt.plot(plot_x, plot_y, color="red")
+        plt.title("Intégration simpson")
+        plt.show()
 
     # Si les bornes sont inversée, on inverse le signe de l'aire
     if negatif:
@@ -172,7 +230,9 @@ def integration_simpson_python_base(fonction, X0, X1, n):
     return aire
 
 
-def integration_rectangles_numpy(fonction, X0, X1, n):
+
+def Integration_rectangles_numpy(fonction, X0, X1, n, graph):
+
     """
     :param fonction: Fonction à intégrer
     :param X0: Première valeur de X
@@ -198,6 +258,17 @@ def integration_rectangles_numpy(fonction, X0, X1, n):
     Y = X.copy()
     Y = fonction(Y)
 
+    # Plot de la courbe exacte
+    if graph:
+        plot_x = np.linspace(x0, x1, 1000)
+        plot_y = Fonction_test(plot_x)
+
+        plt.plot(plot_x, plot_y, color="red")
+        plt.bar(X,Y, width=dx, color='blue', alpha=0.5, edgecolor='blue')
+        plt.title("Intégration rectangles numpy")
+
+        plt.show()
+
     # On calcule l'aire de chaque trapèze puis on en fait la sommation
     aire = Y.copy()*dx
     aire = sum(aire)
@@ -210,7 +281,9 @@ def integration_rectangles_numpy(fonction, X0, X1, n):
     return aire
 
 
-def integration_trapezes_numpy(fonction, X0, X1, n):
+
+def Integration_trapezes_numpy(fonction, X0, X1, n, graph):
+
     """
     :param fonction: Fonction à intégrer
     :param X0: Première valeur de X
@@ -243,6 +316,24 @@ def integration_trapezes_numpy(fonction, X0, X1, n):
     aire = Ya.copy()*dx + (Yb.copy() - Ya.copy()) * dx / 2
     aire = sum(aire)
 
+
+
+    if graph:
+        # Plot de la methode d'integration trapezoidale numpy
+        method_x = np.append(Xa,X1) #Il ne manque que la dernière valeur de X dans notre vecteur Xa, donc on la rajoute
+        method_y = fonction(method_x)
+        plt.plot(method_x, method_y, color='blue')
+        plt.vlines(method_x, 0, method_y,color="blue")
+        plt.fill_between(method_x, method_y, color="blue", alpha=0.5, edgecolor="blue")
+
+        # Plot de la courbe exacte
+        plot_x = np.linspace(x0, x1, 1000)
+        plot_y = Fonction_test(plot_x)
+        plt.plot(plot_x, plot_y, color="red")
+
+        plt.title("Intégration trapézoidale numpy")
+        plt.show()
+
     # Si les bornes sont inversée, on inverse le signe de l'aire
     if negatif:
         aire = -aire
@@ -251,7 +342,9 @@ def integration_trapezes_numpy(fonction, X0, X1, n):
     return aire
 
 
-def integration_simpson_numpy(fonction, X0, X1, n):
+
+def Integration_simpson_numpy(fonction, X0, X1, n, graph):
+
     """
     :param fonction: Fonction à intégrer
     :param X0: Première valeur de X
@@ -283,6 +376,22 @@ def integration_simpson_numpy(fonction, X0, X1, n):
     Yb = fonction(Yb)
     Yc = fonction(Yc)
 
+
+    if graph:
+        method_x = np.linspace(Xa, Xb, 100)
+        method_y = (Ya * (method_x - Xc) * (method_x - Xb) / ((Xa - Xc) * (Xa - Xb)) +
+                    Yc * (method_x - Xa) * (method_x - Xb) / ((Xc - Xa) * (Xc - Xb)) +
+                    Yb * (method_x - Xa) * (method_x - Xc) / ((Xb - Xa) * (Xb - Xc)))
+        plt.plot(method_x, method_y, color="blue")
+
+        # Plot de la courbe exacte
+        plot_x = np.linspace(x0, x1, 1000)
+        plot_y = Fonction_test(plot_x)
+        plt.plot(plot_x, plot_y, color="red")
+
+        plt.title("Intégration simpson numpy")
+        plt.show()
+
     # On calcule l'aire de chaque parabole puis on en fait la sommation
     aire = (Xb.copy() - Xa.copy()) / 6 * (Ya.copy() + 4 * Yc.copy() + Yb.copy())
     aire = sum(aire)
@@ -295,7 +404,9 @@ def integration_simpson_numpy(fonction, X0, X1, n):
     return aire
 
 
-def integration_trapezes_scipy(fonction, X0, X1, n):
+
+def Integration_trapezes_scipy(fonction, X0, X1, n, graph):
+
     """
         :param fonction: Fonction à intégrer
         :param X0: Première valeur de X
@@ -324,6 +435,22 @@ def integration_trapezes_scipy(fonction, X0, X1, n):
     aire = sp.integrate.trapezoid(Y, x=X, dx=dx)
 
 
+    if graph:
+        for i in range(n):
+            plt.plot([X[i], X[i]], [0, Y[i]], color = "blue")  # Ligne verticale gauche
+            plt.plot([X[i], X[i + 1]], [Y[i], Y[i + 1]], color = "blue")  # Ligne inclinée du trapèze
+            plt.plot([X[i + 1], X[i + 1]], [0, Y[i + 1]], color= "blue")  # Ligne verticale droite
+
+        plt.fill_between(X, Y, alpha=0.5, color="blue")  # Remplissage
+
+        # Plot de la courbe exacte
+        plot_x = np.linspace(x0, x1, 1000)
+        plot_y = Fonction_test(plot_x)
+        plt.plot(plot_x, plot_y, color="red")
+
+        plt.title("Integration trapeze scipy")
+        plt.show()
+
     # Si les bornes sont inversée, on inverse le signe de l'aire
     if negatif:
         aire = -aire
@@ -332,7 +459,9 @@ def integration_trapezes_scipy(fonction, X0, X1, n):
     return aire
 
 
-def integration_simpson_scipy(fonction, X0, X1, n):
+
+def Integration_simpson_scipy(fonction, X0, X1, n, graph):
+
     """
         :param fonction: Fonction à intégrer
         :param X0: Première valeur de X
@@ -359,7 +488,22 @@ def integration_simpson_scipy(fonction, X0, X1, n):
 
     # On calcul notre aire à l'aide de scipy
     aire = sp.integrate.simpson(Y, x=X, dx=dx)
+    if graph:
+        for i in range(0, n, 2):
+            method_x = np.linspace(X[i], X[i + 2], 10)  # 10 points pour lisser la parabole
+            method_y = (Y[i] * (method_x - X[i + 1]) * (method_x - X[i + 2]) / ((X[i] - X[i + 1]) * (X[i] - X[i + 2])) +
+                    Y[i + 1] * (method_x - X[i]) * (method_x - X[i + 2]) / ((X[i + 1] - X[i]) * (X[i + 1] - X[i + 2])) +
+                    Y[i + 2] * (method_x - X[i]) * (method_x - X[i + 1]) / ((X[i + 2] - X[i]) * (X[i + 2] - X[i + 1])))
+            plt.plot(method_x, method_y, color = "blue")  # Parabole bleue
+            plt.fill_between(method_x, method_y, alpha = 0.5, color = "blue")  # Remplissage de la zone
 
+        # Plot de la courbe exacte
+        plot_x = np.linspace(x0, x1, 1000)
+        plot_y = Fonction_test(plot_x)
+        plt.plot(plot_x, plot_y, color="red")
+
+        plt.title("Integration simpson scipy")
+        plt.show()
 
     # Si les bornes sont inversée, on inverse le signe de l'aire
     if negatif:
@@ -379,16 +523,18 @@ def erreur_integration(x0, x1, n):
 
     resultat_analytique= solution_analytique(x1) - solution_analytique(x0)
 
-    resultat_rectangles_python_base = integration_rectangles_python_base(fonction_test, x0, x1, n)
-    resultat_rectangles_numpy = integration_rectangles_numpy(fonction_test, x0, x1, n)
 
-    resultat_trapezes_python_base = integration_trapezes_python_base(fonction_test, x0, x1, n)
-    resultat_trapezes_numpy = integration_trapezes_numpy(fonction_test, x0, x1, n)
-    resultat_trapezes_scipy = integration_trapezes_scipy(fonction_test, x0, x1, n)
+    resultat_rectangles_python_base = Integration_rectangles_python_base(Fonction_test, x0, x1, n, False)
+    resultat_rectangles_numpy = Integration_rectangles_numpy(Fonction_test, x0, x1, n, False)
 
-    resultat_simpson_python_base = integration_simpson_python_base(fonction_test, x0, x1, n)
-    resultat_simpson_numpy = integration_simpson_numpy(fonction_test, x0, x1, n)
-    resultat_simpson_scipy = integration_simpson_scipy(fonction_test, x0, x1, n)
+    resultat_trapezes_python_base = Integration_trapezes_python_base(Fonction_test, x0, x1, n, False)
+    resultat_trapezes_numpy = Integration_trapezes_numpy(Fonction_test, x0, x1, n, False)
+    resultat_trapezes_scipy = Integration_trapezes_scipy(Fonction_test, x0, x1, n, False)
+
+    resultat_simpson_python_base = Integration_simpson_python_base(Fonction_test, x0, x1, n, False)
+    resultat_simpson_numpy = Integration_simpson_numpy(Fonction_test, x0, x1, n, False)
+    resultat_simpson_scipy = Integration_simpson_scipy(Fonction_test, x0, x1, n, False)
+
 
 
     erreur_rectangle_python_base = abs((resultat_rectangles_python_base-resultat_analytique)/resultat_analytique)
@@ -407,4 +553,42 @@ def erreur_integration(x0, x1, n):
             [erreur_trapezes_python_base, erreur_trapezes_numpy, erreur_trapezes_scipy],
             [erreur_simpson_python_base, erreur_simpson_numpy, erreur_simpson_scipy]]
 
-print(erreur_integration(-5, 5, 1000))
+
+def Performance(fonction, x0, x1, n):
+    # Fonction analytique pour comparaison
+    resultat_analytique = Solution_analytique(x1) - Solution_analytique(x0)
+
+    # Liste des méthodes d'intégration et leurs noms
+    integration_methods = [
+        ("Rectangles Python Base", Integration_rectangles_python_base),
+        ("Rectangles NumPy", Integration_rectangles_numpy),
+        ("Trapèzes Python Base", Integration_trapezes_python_base),
+        ("Trapèzes NumPy", Integration_trapezes_numpy),
+        ("Trapèzes SciPy", Integration_trapezes_scipy),
+        ("Simpson Python Base", Integration_simpson_python_base),
+        ("Simpson NumPy", Integration_simpson_numpy),
+        ("Simpson SciPy", Integration_simpson_scipy),
+    ]
+
+    # Dictionnaire pour stocker les résultats
+    results = {}
+
+    # Mesure du temps d'exécution pour chaque fonction
+    for name, method in integration_methods:
+        timer = timeit.timeit(lambda: method(fonction, x0, x1, n, False), number=1000)
+        results[name] = timer / 10  # Moyenne sur 10 exécutions
+
+    # Affichage des résultats
+    for name, time_taken in results.items():
+        print(f"{name}: {time_taken:.6f} secondes")
+
+    return results
+
+def main():
+    Performance(Fonction_test, -5, 5, 1000)
+
+    #print(Erreur_integration(-1, 1, 10))
+    #print(2 ** 64)
+
+main()
+
