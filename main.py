@@ -5,14 +5,14 @@ import timeit
 import time
 
 
-def Fonction_test(x):
+def fonction_test(x):
 
     # Aire sous la courbe entre -5 et 5 = 200
     y = -2.5 * x**3 + 3 * x**2 + 7*x - 5
 
     return y
 
-def Solution_analytique(x, b = 0):
+def solution_analytique(x, b = 0):
 
     # Solution analytique à notre foction de test
     y = -2.5/4 * x**4 + x**3 + 7/2 * x**2 - 5 * x + b
@@ -377,18 +377,18 @@ def erreur_integration(x0, x1, n):
     :return:
     """
 
-    resultat_analytique= Solution_analytique(x1) - Solution_analytique(x0)
+    resultat_analytique= solution_analytique(x1) - solution_analytique(x0)
 
-    resultat_rectangles_python_base = integration_rectangles_python_base(Fonction_test, x0, x1, n)
-    resultat_rectangles_numpy = integration_rectangles_numpy(Fonction_test, x0, x1, n)
+    resultat_rectangles_python_base = integration_rectangles_python_base(fonction_test, x0, x1, n)
+    resultat_rectangles_numpy = integration_rectangles_numpy(fonction_test, x0, x1, n)
 
-    resultat_trapezes_python_base = integration_trapezes_python_base(Fonction_test, x0, x1, n)
-    resultat_trapezes_numpy = integration_trapezes_numpy(Fonction_test, x0, x1, n)
-    resultat_trapezes_scipy = integration_trapezes_scipy(Fonction_test, x0, x1, n)
+    resultat_trapezes_python_base = integration_trapezes_python_base(fonction_test, x0, x1, n)
+    resultat_trapezes_numpy = integration_trapezes_numpy(fonction_test, x0, x1, n)
+    resultat_trapezes_scipy = integration_trapezes_scipy(fonction_test, x0, x1, n)
 
-    resultat_simpson_python_base = integration_simpson_python_base(Fonction_test, x0, x1, n)
-    resultat_simpson_numpy = integration_simpson_numpy(Fonction_test, x0, x1, n)
-    resultat_simpson_scipy = integration_simpson_scipy(Fonction_test, x0, x1, n)
+    resultat_simpson_python_base = integration_simpson_python_base(fonction_test, x0, x1, n)
+    resultat_simpson_numpy = integration_simpson_numpy(fonction_test, x0, x1, n)
+    resultat_simpson_scipy = integration_simpson_scipy(fonction_test, x0, x1, n)
 
 
     erreur_rectangle_python_base = abs((resultat_rectangles_python_base-resultat_analytique)/resultat_analytique)
