@@ -5,13 +5,13 @@ import timeit
 import time
 
 
-def Fonction_test(x):
+def fonction_test(x):
 
     # Aire sous la courbe entre -5 et 5 = 200
     y = -2.5 * x**3 + 3 * x**2 + 7*x - 5
     return y
 
-def Solution_analytique(x, b = 0):
+def solution_analytique(x, b = 0):
 
     # Solution analytique à notre foction de test
     y = -2.5/4 * x**4 + x**3 + 7/2 * x**2 - 5 * x + b
@@ -20,7 +20,9 @@ def Solution_analytique(x, b = 0):
     return y
 
 
+
 def Integration_rectangles_python_base(fonction, X0, X1, n, graph):
+
 
     """
     :param fonction: Fonction à intégrer
@@ -78,7 +80,9 @@ def Integration_rectangles_python_base(fonction, X0, X1, n, graph):
     return aire
 
 
+
 def Integration_trapezes_python_base(fonction, X0, X1, n, graph):
+
 
     """
     :param fonction: Fonction à intégrer
@@ -157,7 +161,9 @@ def Integration_trapezes_python_base(fonction, X0, X1, n, graph):
     return aire
 
 
+
 def Integration_simpson_python_base(fonction, X0, X1, n, graph):
+
 
     """
     :param fonction: Fonction à intégrer
@@ -224,7 +230,9 @@ def Integration_simpson_python_base(fonction, X0, X1, n, graph):
     return aire
 
 
+
 def Integration_rectangles_numpy(fonction, X0, X1, n, graph):
+
     """
     :param fonction: Fonction à intégrer
     :param X0: Première valeur de X
@@ -273,7 +281,9 @@ def Integration_rectangles_numpy(fonction, X0, X1, n, graph):
     return aire
 
 
+
 def Integration_trapezes_numpy(fonction, X0, X1, n, graph):
+
     """
     :param fonction: Fonction à intégrer
     :param X0: Première valeur de X
@@ -332,7 +342,9 @@ def Integration_trapezes_numpy(fonction, X0, X1, n, graph):
     return aire
 
 
+
 def Integration_simpson_numpy(fonction, X0, X1, n, graph):
+
     """
     :param fonction: Fonction à intégrer
     :param X0: Première valeur de X
@@ -392,7 +404,9 @@ def Integration_simpson_numpy(fonction, X0, X1, n, graph):
     return aire
 
 
+
 def Integration_trapezes_scipy(fonction, X0, X1, n, graph):
+
     """
         :param fonction: Fonction à intégrer
         :param X0: Première valeur de X
@@ -445,7 +459,9 @@ def Integration_trapezes_scipy(fonction, X0, X1, n, graph):
     return aire
 
 
+
 def Integration_simpson_scipy(fonction, X0, X1, n, graph):
+
     """
         :param fonction: Fonction à intégrer
         :param X0: Première valeur de X
@@ -496,7 +512,7 @@ def Integration_simpson_scipy(fonction, X0, X1, n, graph):
     # On retourne l'aire
     return aire
 
-def Erreur_integration(x0, x1, n):
+def erreur_integration(x0, x1, n):
 
     """
     :param X0: Première valeur de X
@@ -505,7 +521,8 @@ def Erreur_integration(x0, x1, n):
     :return:
     """
 
-    resultat_analytique= Solution_analytique(x1) - Solution_analytique(x0)
+    resultat_analytique= solution_analytique(x1) - solution_analytique(x0)
+
 
     resultat_rectangles_python_base = Integration_rectangles_python_base(Fonction_test, x0, x1, n, False)
     resultat_rectangles_numpy = Integration_rectangles_numpy(Fonction_test, x0, x1, n, False)
@@ -517,6 +534,7 @@ def Erreur_integration(x0, x1, n):
     resultat_simpson_python_base = Integration_simpson_python_base(Fonction_test, x0, x1, n, False)
     resultat_simpson_numpy = Integration_simpson_numpy(Fonction_test, x0, x1, n, False)
     resultat_simpson_scipy = Integration_simpson_scipy(Fonction_test, x0, x1, n, False)
+
 
 
     erreur_rectangle_python_base = abs((resultat_rectangles_python_base-resultat_analytique)/resultat_analytique)
@@ -534,6 +552,7 @@ def Erreur_integration(x0, x1, n):
     return [[erreur_rectangle_python_base, erreur_rectangle_numpy],
             [erreur_trapezes_python_base, erreur_trapezes_numpy, erreur_trapezes_scipy],
             [erreur_simpson_python_base, erreur_simpson_numpy, erreur_simpson_scipy]]
+
 
 def Performance(fonction, x0, x1, n):
     # Fonction analytique pour comparaison
@@ -572,3 +591,4 @@ def main():
     #print(2 ** 64)
 
 main()
+
