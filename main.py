@@ -20,7 +20,7 @@ def Solution_analytique(x, b = 0):
     return y
 
 
-def Integration_rectangles_python_base(fonction, X0, X1, n):
+def integration_rectangles_python_base(fonction, X0, X1, n):
 
     """
     :param fonction: Fonction à intégrer
@@ -62,7 +62,7 @@ def Integration_rectangles_python_base(fonction, X0, X1, n):
     return aire
 
 
-def Integration_trapezes_python_base(fonction, X0, X1, n):
+def integration_trapezes_python_base(fonction, X0, X1, n):
 
     """
     :param fonction: Fonction à intégrer
@@ -123,7 +123,7 @@ def Integration_trapezes_python_base(fonction, X0, X1, n):
     return aire
 
 
-def Integration_simpson_python_base(fonction, X0, X1, n):
+def integration_simpson_python_base(fonction, X0, X1, n):
 
     """
     :param fonction: Fonction à intégrer
@@ -172,7 +172,7 @@ def Integration_simpson_python_base(fonction, X0, X1, n):
     return aire
 
 
-def Integration_rectangles_numpy(fonction, X0, X1, n):
+def integration_rectangles_numpy(fonction, X0, X1, n):
     """
     :param fonction: Fonction à intégrer
     :param X0: Première valeur de X
@@ -210,7 +210,7 @@ def Integration_rectangles_numpy(fonction, X0, X1, n):
     return aire
 
 
-def Integration_trapezes_numpy(fonction, X0, X1, n):
+def integration_trapezes_numpy(fonction, X0, X1, n):
     """
     :param fonction: Fonction à intégrer
     :param X0: Première valeur de X
@@ -251,7 +251,7 @@ def Integration_trapezes_numpy(fonction, X0, X1, n):
     return aire
 
 
-def Integration_simpson_numpy(fonction, X0, X1, n):
+def integration_simpson_numpy(fonction, X0, X1, n):
     """
     :param fonction: Fonction à intégrer
     :param X0: Première valeur de X
@@ -295,7 +295,7 @@ def Integration_simpson_numpy(fonction, X0, X1, n):
     return aire
 
 
-def Integration_trapezes_scipy(fonction, X0, X1, n):
+def integration_trapezes_scipy(fonction, X0, X1, n):
     """
         :param fonction: Fonction à intégrer
         :param X0: Première valeur de X
@@ -332,7 +332,7 @@ def Integration_trapezes_scipy(fonction, X0, X1, n):
     return aire
 
 
-def Integration_simpson_scipy(fonction, X0, X1, n):
+def integration_simpson_scipy(fonction, X0, X1, n):
     """
         :param fonction: Fonction à intégrer
         :param X0: Première valeur de X
@@ -368,7 +368,7 @@ def Integration_simpson_scipy(fonction, X0, X1, n):
     # On retourne l'aire
     return aire
 
-def Erreur_integration(x0, x1, n):
+def erreur_integration(x0, x1, n):
 
     """
     :param X0: Première valeur de X
@@ -379,16 +379,16 @@ def Erreur_integration(x0, x1, n):
 
     resultat_analytique= Solution_analytique(x1) - Solution_analytique(x0)
 
-    resultat_rectangles_python_base = Integration_rectangles_python_base(Fonction_test, x0, x1, n)
-    resultat_rectangles_numpy = Integration_rectangles_numpy(Fonction_test, x0, x1, n)
+    resultat_rectangles_python_base = integration_rectangles_python_base(Fonction_test, x0, x1, n)
+    resultat_rectangles_numpy = integration_rectangles_numpy(Fonction_test, x0, x1, n)
 
-    resultat_trapezes_python_base = Integration_trapezes_python_base(Fonction_test, x0, x1, n)
-    resultat_trapezes_numpy = Integration_trapezes_numpy(Fonction_test, x0, x1, n)
-    resultat_trapezes_scipy = Integration_trapezes_scipy(Fonction_test, x0, x1, n)
+    resultat_trapezes_python_base = integration_trapezes_python_base(Fonction_test, x0, x1, n)
+    resultat_trapezes_numpy = integration_trapezes_numpy(Fonction_test, x0, x1, n)
+    resultat_trapezes_scipy = integration_trapezes_scipy(Fonction_test, x0, x1, n)
 
-    resultat_simpson_python_base = Integration_simpson_python_base(Fonction_test, x0, x1, n)
-    resultat_simpson_numpy = Integration_simpson_numpy(Fonction_test, x0, x1, n)
-    resultat_simpson_scipy = Integration_simpson_scipy(Fonction_test, x0, x1, n)
+    resultat_simpson_python_base = integration_simpson_python_base(Fonction_test, x0, x1, n)
+    resultat_simpson_numpy = integration_simpson_numpy(Fonction_test, x0, x1, n)
+    resultat_simpson_scipy = integration_simpson_scipy(Fonction_test, x0, x1, n)
 
 
     erreur_rectangle_python_base = abs((resultat_rectangles_python_base-resultat_analytique)/resultat_analytique)
@@ -407,5 +407,4 @@ def Erreur_integration(x0, x1, n):
             [erreur_trapezes_python_base, erreur_trapezes_numpy, erreur_trapezes_scipy],
             [erreur_simpson_python_base, erreur_simpson_numpy, erreur_simpson_scipy]]
 
-print(Erreur_integration(-5, 5, 1000))
-print(2**64)
+print(erreur_integration(-5, 5, 1000))
