@@ -11,6 +11,7 @@ def fonction_test(x):
     y = -2.5 * x**3 + 3 * x**2 + 7*x - 5
     return y
 
+
 def solution_analytique(x, b = 0):
 
     # Solution analytique à notre foction de test
