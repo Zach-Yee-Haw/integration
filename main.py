@@ -565,10 +565,42 @@ def Performance(fonction, x0, x1, n):
 
     return results
 
-def main():
-    Performance(Fonction_test, -5, 5, 1000)
+def affichage(fonction, x0, x1, n):
+    resultat_analytique = Solution_analytique(x1) - Solution_analytique(x0)
 
-    #print(Erreur_integration(-1, 1, 10))
-    #print(2 ** 64)
+    # Liste des méthodes d'intégration et leurs noms
+    integration_methods = [
+        Integration_rectangles_python_base,
+        Integration_rectangles_numpy,
+        Integration_trapezes_python_base,
+        Integration_trapezes_numpy,
+        Integration_trapezes_scipy,
+        Integration_simpson_python_base,
+        Integration_simpson_numpy,
+        Integration_simpson_scipy,
+    ]
+
+    for method in integration_methods:
+        method(fonction, x0,x1,n,True)
+
+def main():
+
+    x0 = -5
+    x1 = 5
+    n = 10
+
+    #Si = 1, les informations de performance des fonctions selon les parametre ci-dessous seront lancé
+    do_performance = 0
+    if do_performance:
+        Performance(Fonction_test, x0, x1,n)
+
+    #Si = 1, les graphiques font s'afficher selon les parametres rentrer dans la fonction ci-dessous. Attention tu sera bombarder de graphique.
+    do_affichage = 0
+    if do_affichage:
+        affichage(Fonction_test, x0, x1, n)
+
+    do_erreur = 0
+    if do_erreur:
+        print(Erreur_integration(x0, x1, n))
 
 main()
