@@ -11,6 +11,7 @@ def fonction_test(x):
     y = -2.5 * x**3 + 3 * x**2 + 7*x - 5
     return y
 
+
 def solution_analytique(x, b = 0):
 
     # Solution analytique à notre foction de test
@@ -50,7 +51,7 @@ def Integration_rectangles_python_base(fonction, X0, X1, n, graph):
     x = x0 + dx/2
 
     plot_x = np.linspace(x0,x1, 1000)
-    plot_y = Fonction_test(plot_x)
+    plot_y = fonction_test(plot_x)
     plt.plot(plot_x, plot_y, color='red')
     # On ajoute l'aire arithmétique de chaque rectangle à l'aire totale
 
@@ -60,7 +61,7 @@ def Integration_rectangles_python_base(fonction, X0, X1, n, graph):
 
         if graph:
             plot_x = np.append(plot_x, x)
-            plot_y = np.append(plot_y, Fonction_test(x))
+            plot_y = np.append(plot_y, fonction_test(x))
             plt.bar(x,fonction(x), width=dx, color='blue', alpha=0.5, edgecolor='blue')
 
         x += dx
@@ -145,7 +146,7 @@ def Integration_trapezes_python_base(fonction, X0, X1, n, graph):
     if graph:
         # Plot de la courbe exacte
         plot_x = np.linspace(x0, x1, 1000)
-        plot_y = Fonction_test(plot_x)
+        plot_y = fonction_test(plot_x)
         plt.plot(plot_x, plot_y, color="red")
 
         plt.title("Intégration trapézoidale")
@@ -216,7 +217,7 @@ def Integration_simpson_python_base(fonction, X0, X1, n, graph):
     if graph:
         # Plot de la courbe exacte
         plot_x = np.linspace(x0, x1, 1000)
-        plot_y = Fonction_test(plot_x)
+        plot_y = fonction_test(plot_x)
         plt.plot(plot_x, plot_y, color="red")
         plt.title("Intégration simpson")
         plt.show()
@@ -261,7 +262,7 @@ def Integration_rectangles_numpy(fonction, X0, X1, n, graph):
     # Plot de la courbe exacte
     if graph:
         plot_x = np.linspace(x0, x1, 1000)
-        plot_y = Fonction_test(plot_x)
+        plot_y = fonction_test(plot_x)
 
         plt.plot(plot_x, plot_y, color="red")
         plt.bar(X,Y, width=dx, color='blue', alpha=0.5, edgecolor='blue')
@@ -328,7 +329,7 @@ def Integration_trapezes_numpy(fonction, X0, X1, n, graph):
 
         # Plot de la courbe exacte
         plot_x = np.linspace(x0, x1, 1000)
-        plot_y = Fonction_test(plot_x)
+        plot_y = fonction_test(plot_x)
         plt.plot(plot_x, plot_y, color="red")
 
         plt.title("Intégration trapézoidale numpy")
@@ -445,7 +446,7 @@ def Integration_trapezes_scipy(fonction, X0, X1, n, graph):
 
         # Plot de la courbe exacte
         plot_x = np.linspace(x0, x1, 1000)
-        plot_y = Fonction_test(plot_x)
+        plot_y = fonction_test(plot_x)
         plt.plot(plot_x, plot_y, color="red")
 
         plt.title("Integration trapeze scipy")
@@ -584,11 +585,43 @@ def Performance(fonction, x0, x1, n):
 
     return results
 
-def main():
-    Performance(Fonction_test, -5, 5, 1000)
+def affichage(fonction, x0, x1, n):
+    resultat_analytique = solution_analytique(x1) - solution_analytique(x0)
 
-    #print(Erreur_integration(-1, 1, 10))
-    #print(2 ** 64)
+    # Liste des méthodes d'intégration et leurs noms
+    integration_methods = [
+        Integration_rectangles_python_base,
+        Integration_rectangles_numpy,
+        Integration_trapezes_python_base,
+        Integration_trapezes_numpy,
+        Integration_trapezes_scipy,
+        Integration_simpson_python_base,
+        Integration_simpson_numpy,
+        Integration_simpson_scipy,
+    ]
+
+    for method in integration_methods:
+        method(fonction, x0,x1,n,True)
+
+def main():
+
+    x0 = -5
+    x1 = 5
+    n = 10
+
+    #Si = 1, les informations de performance des fonctions selon les parametre ci-dessous seront lancé
+    do_performance = 0
+    if do_performance:
+        Performance(fonction_test, x0, x1,n)
+
+    #Si = 1, les graphiques font s'afficher selon les parametres rentrer dans la fonction ci-dessous. Attention tu sera bombarder de graphique.
+    do_affichage = 0
+    if do_affichage:
+        affichage(fonction_test, x0, x1, n)
+
+    do_erreur = 0
+    if do_erreur:
+        print(erreur_integration(x0, x1, n))
 
 main()
 
